@@ -6,7 +6,7 @@ Simply download [`rafcol.exe`](https://github.com/ShawnTheBeachy/return-affinity
 
 NOTE: If you installed Affinity using the MSIX you may need to take ownership of the `App` folder and give the `Administrators` group full control permissions before this tool can work.
 
-Before the tool runs, it will make a backup of your current `Serif.Affinity.dll` file. If anything goes wrong, you can revert to the default DLL by deleting the modified `Serif.Affinity.dll` and renaming `Serif.Affinity.bak` to `Serif.Affinity.dll`.
+Before the tool runs, it will make a backup of your current `Serif.Affinity.dll` file. If anything goes wrong, you can revert to the default DLL by deleting the modified `Serif.Affinity.dll` and renaming `Serif.Affinity.bak` to `Serif.Affinity.dll`. A copy of `Serif.Affinity.bak` is also provided in this repository in case you lose your original copy.
 
 The tool will run and output a list of all the resources it replaced. A few new tools, such as the adjustment brush and filter brush, will not be replaced since they did not exist in v2.
 
