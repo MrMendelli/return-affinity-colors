@@ -10,5 +10,7 @@ Before the tool runs, it will make a backup of your current `Serif.Affinity.dll`
 
 The tool will run and output a list of all the resources it replaced. A few new tools, such as the adjustment brush and filter brush, will not be replaced since they did not exist in v2.
 
+NOTE: When Affinity updates it is likely that `Serif.Affinity.dll` will get overwritten with an updated version. You should be able to simply run the tool again to return the colored icons.
+
 # How it works
 The icons which Affinity uses are embedded as resources inside the `Serif.Affinity.dll` file. This tool loads the DLL file, reads those resources, and replaces them with the matching v2 resources. Then it modifies the DLL file, replacing the v3 resources with the v2/v3 combined resources.
