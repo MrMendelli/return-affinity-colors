@@ -36,41 +36,25 @@ void BackUpV3Dll()
     );
 }
 
-IReadOnlyList<ResourceReader> CollectV2ResourceReaders()
-{
-    var designerResReader = new ResourceReader(
-        embeddedFileProvider
-            .GetFileInfo("res/Serif.Affinity.Designer.g.resources")
-            .CreateReadStream()
-            .DisposeWith(disposables)
-    ).DisposeWith(disposables);
-    var photoResReader = new ResourceReader(
-        embeddedFileProvider
-            .GetFileInfo("res/Serif.Affinity.Photo.g.resources")
-            .CreateReadStream()
-            .DisposeWith(disposables)
-    ).DisposeWith(disposables);
-    var publisherResReader = new ResourceReader(
-        embeddedFileProvider
-            .GetFileInfo("res/Serif.Affinity.Publisher.g.resources")
-            .CreateReadStream()
-            .DisposeWith(disposables)
-    ).DisposeWith(disposables);
-    return [designerResReader, photoResReader, publisherResReader];
-}
-
-object? FindV2Resource(string key, IReadOnlyList<ResourceReader> v2ResourceReaders)
+object? FindV2Resource(string key, ResourceReader v2ResourceReader)
 {
     var v2Key = GetV2ResourceKey(key);
 
-    foreach (var resourceReader in v2ResourceReaders)
-    foreach (DictionaryEntry v2Entry in resourceReader)
+    foreach (DictionaryEntry v2Entry in v2ResourceReader)
         if (v2Entry.Key.ToString() == v2Key)
             return v2Entry.Value;
 
     Console.WriteLine(Yellow($"Failed to resolve v2 resource \"{key}\"."));
     return null;
 }
+
+ResourceReader GetV2ResourceReader() =>
+    new ResourceReader(
+        embeddedFileProvider
+            .GetFileInfo("res/Serif.Affinity.v2.g.resources")
+            .CreateReadStream()
+            .DisposeWith(disposables)
+    ).DisposeWith(disposables);
 
 string GetV2ResourceKey(string v3ResourceKey) =>
     v3ResourceKey switch
@@ -98,20 +82,19 @@ string GetV2ResourceKey(string v3ResourceKey) =>
         _ => v3ResourceKey,
     };
 
-ResourceReader GetV3ResourceReader()
-{
-    var v3ResourceStream = v3Module
-        .Resources.FindEmbeddedResource("Serif.Affinity.g.resources")
-        .CreateReader()
-        .AsStream()
-        .DisposeWith(disposables);
-    return new ResourceReader(v3ResourceStream);
-}
+ResourceReader GetV3ResourceReader() =>
+    new ResourceReader(
+        v3Module
+            .Resources.FindEmbeddedResource("Serif.Affinity.g.resources")
+            .CreateReader()
+            .AsStream()
+            .DisposeWith(disposables)
+    ).DisposeWith(disposables);
 
 void MergeResources()
 {
     File.Delete(mergedResourcesFile);
-    var v2ResourceReaders = CollectV2ResourceReaders();
+    var v2ResourceReader = GetV2ResourceReader();
     var v3ResourceReader = GetV3ResourceReader();
     var mergedResourcesWriter = new ResourceWriter(mergedResourcesFile);
 
@@ -134,7 +117,7 @@ void MergeResources()
 
         try
         {
-            var v2Resource = FindV2Resource(key, v2ResourceReaders);
+            var v2Resource = FindV2Resource(key, v2ResourceReader);
             mergedResourcesWriter.AddResource(key, v2Resource ?? v3Entry.Value);
             Console.WriteLine(Green($"Merged v2 resource \"{key}\"."));
         }
@@ -146,7 +129,6 @@ void MergeResources()
         }
     }
 
-    v3ResourceReader.Dispose();
     mergedResourcesWriter.Dispose();
 }
 
