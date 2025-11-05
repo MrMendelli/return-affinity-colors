@@ -16,3 +16,41 @@ NOTE: When Affinity updates it is likely that `Serif.Affinity.dll` will get over
 
 # How it works
 The icons which Affinity uses are embedded as resources inside the `Serif.Affinity.dll` file. This tool loads the DLL file, reads those resources, and replaces them with the matching v2 resources. Then it modifies the DLL file, replacing the v3 resources with the v2/v3 combined resources.
+
+# MSIX permissions
+If you installed Affinity with the MSIX installer, you will need to get permissions for the Affinity installation folder.
+
+1. Take ownership of the `WindowsApps` folder. Navigate to `C:\Program Files`. Make sure that your file explorer options are set to show hidden files and folders. Right-click on the `WindowsApps` folder and click "Properties". Navigate to the `Security` tab and click `Advanced`.
+   
+   <img width="714" height="918" alt="image" src="https://github.com/user-attachments/assets/5e724d37-ba21-425f-b98b-8bfb62b98cc3" />
+   
+   Click "Change" next to the "Owner".
+   
+   <img width="1528" height="992" alt="image" src="https://github.com/user-attachments/assets/6c046613-0fe2-42ce-93ae-f520c73aac0c" />
+
+   Enter your username and then click "Check names". Click "OK", and then "OK" again.
+
+2. Now you should be able to open the `WindowsApps` folder. Inside it, find the Affinity installation folder. This will probably be something like `Canva.Affinity_3.0.0.3791_x64__8a0j1tnjnt4a4`. Open the folder and right-click on the `App` folder. Follow the same steps as step 1 to take ownership of the `App` folder, but this time be sure to check the "Replace owner on subcontainers and objects" checkbox.
+   
+    <img width="1516" height="990" alt="image" src="https://github.com/user-attachments/assets/50a08be4-a644-46cc-8769-6a36d30c4074" />
+
+   
+3. Right-click on `App` again, choose properties, and navigate to Security > Advanced again. This time, check the "Replace all child object permission entries..." checkbox and then click "Disable inheritance". When prompted, choose to convert inherited permissions into explicit permissions.
+
+   <img width="1520" height="996" alt="image" src="https://github.com/user-attachments/assets/177d0845-64c1-4f67-997e-c6210527296a" />
+
+
+   Click "Apply", then choose "Yes".
+
+4. Select the "Administrators" group permissions, then click "Edit".
+   
+   <img width="1518" height="990" alt="image" src="https://github.com/user-attachments/assets/0d8a840e-1ed1-426a-a14d-6ce4e6bd40c7" />
+
+    Choose "Full control", then click "OK".
+
+   <img width="1816" height="1134" alt="image" src="https://github.com/user-attachments/assets/17cc6e2b-98af-4136-8ca5-0fb9ba30e157" />
+
+5. Click "OK", then "OK" again to close the "Properties" window.
+
+   You should now be able to run the `rafcol` command to update your Affinity icons!
+
