@@ -4,18 +4,29 @@ This application modifies the `Serif.Affinity.dll` file to return colored tool i
 NOTE: This tool has only been tested on Windows. It runs on .NET 9, so it should be able to run on Linux and macOS. However, I'm not familiar with how Affinity is compiled on those platforms and I don't have either one to test on. You are free to compile it yourself and give it a try.
 
 # How to use it
-Simply download [`rafcol.exe`](https://github.com/ShawnTheBeachy/return-affinity-colors/releases/download/v1/rafcol.exe) and open an administrator command prompt at the download location. From the command prompt, run `rafcol "<path-to-folder-containing-Serif.Affinity.dll>"`. If you installed Affinity using the EXE and the default settings, the installation path is probably `C:\Program Files\Affinity\Affinity`. If you used the MSIX, the installation path is probably something like `C:\Program Files\WindowsApps\Canva.Affinity_3.0.0.3791_x64__8a0j1tnjnt4a4\App`. So, for example, if you used the EXE your command would be `rafcol "C:\Program Files\Affinity\Affinity"`.
+Download [`rafcol.exe`](https://github.com/ShawnTheBeachy/return-affinity-colors/releases/download/v2/rafcol.exe) and open an administrator command prompt at the download location.
+
+From the command prompt, run `rafcol <command> "<installation-path>"`. If you installed Affinity using the EXE and the default settings, the installation path is probably `C:\Program Files\Affinity\Affinity`. If you used the MSIX, the installation path is probably something like `C:\Program Files\WindowsApps\Canva.Affinity_3.0.0.3791_x64__8a0j1tnjnt4a4\App`. So, for example, if you used the EXE your command would be `rafcol "C:\Program Files\Affinity\Affinity"`.
 
 NOTE: If you installed Affinity using the MSIX you may need to take ownership of the `App` folder and give the `Administrators` group full control permissions before this tool can work.
 
-Before the tool runs, it will make a backup of your current `Serif.Affinity.dll` file. If anything goes wrong, you can revert to the default DLL by deleting the modified `Serif.Affinity.dll` and renaming `Serif.Affinity.bak` to `Serif.Affinity.dll`. A copy of `Serif.Affinity.bak` is also provided in this repository in case you lose your original copy.
+## Check write access
+To check if you have write access to the Affinity installation folder, run `rafcol check "<installation-path>"`.
+
+## Colorize icons
+To replace the monochrome icons with colored icons, run `rafcol colorize "<installation-path>"`. This will create a backup of your current `Serif.Affinity.dll` file before updating it. By default this backup will be placed in the folder from which you are running the command prompt. To change the backup location, pass the `--backup "<path>"` option.
 
 The tool will run and output a list of all the resources it replaced. A few new tools, such as the adjustment brush and filter brush, will not be replaced since they did not exist in v2.
 
 NOTE: When Affinity updates it is likely that `Serif.Affinity.dll` will get overwritten with an updated version. You should be able to simply run the tool again to return the colored icons.
 
+## Replace the splash screen image
+To replace the splash screen image, run `rafcol splash "<installation-path>" --img "<splash-image-path>"`. This will create a backup of your current `Affinity.exe` file before updating it. By default this backup will be placed in the folder from which you are running the command prompt. To change the backup location, pass the `--backup "<path>"` option. If anything goes wrong, you can revert to the default DLL by deleting the modified `Serif.Affinity.dll` and renaming `Serif.Affinity.bak` to `Serif.Affinity.dll`. A copy of `Serif.Affinity.bak` is also provided in this repository in case you lose your original copy.
+
+NOTE: When Affinity updates it is likely that `Affinity.exe` will get overwritten with an updated version. You should be able to simply run the tool again to return the custom splash screen.
+
 # How it works
-The icons which Affinity uses are embedded as resources inside the `Serif.Affinity.dll` file. This tool loads the DLL file, reads those resources, and replaces them with the matching v2 resources. Then it modifies the DLL file, replacing the v3 resources with the v2/v3 combined resources.
+The icons and splash screen image which Affinity uses are embedded as resources inside the `Serif.Affinity.dll` and `Affinity.exe` files. This tool loads the DLL or EXE file, reads those resources, and replaces them with the matching v2 resources or your custom splash screen.
 
 # MSIX permissions
 If you installed Affinity with the MSIX installer, you will need to get permissions for the Affinity installation folder.
