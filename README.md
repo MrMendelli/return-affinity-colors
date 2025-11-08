@@ -21,7 +21,7 @@ The tool will run and output a list of all the resources it replaced. A few new 
 NOTE: When Affinity updates it is likely that `Serif.Affinity.dll` will get overwritten with an updated version. You should be able to simply run the tool again to return the colored icons.
 
 ## Replace the splash screen image
-To replace the splash screen image, run `rafcol splash "<installation-path>" --img "<splash-image-path>"`. This will create a backup of your current `Affinity.exe` file before updating it. By default this backup will be placed in the folder from which you are running the command prompt. To change the backup location, pass the `--backup "<path>"` option. If anything goes wrong, you can revert to the default DLL by deleting the modified `Serif.Affinity.dll` and renaming `Serif.Affinity.bak` to `Serif.Affinity.dll`. A copy of `Serif.Affinity.bak` is also provided in this repository in case you lose your original copy.
+To replace the splash screen image, run `rafcol splash "<installation-path>" --img "<splash-image-path>"`. This will create a backup of your current `Affinity.exe` file before updating it. By default this backup will be placed in the folder from which you are running the command prompt. To change the backup location, pass the `--backup "<path>"` option. If anything goes wrong, you can revert to the default EXE by deleting the modified `Affinity.exe` and renaming `Affinity.exe.bak` to `Affinity.exe`.
 
 NOTE: When Affinity updates it is likely that `Affinity.exe` will get overwritten with an updated version. You should be able to simply run the tool again to return the custom splash screen.
 
